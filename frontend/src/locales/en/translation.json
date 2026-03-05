@@ -1,0 +1,153 @@
+{
+  "nav": {
+    "brand": "Sevai Hub",
+    "version": "v3.0",
+    "home": "Home",
+    "findServices": "Find Services",
+    "intelligence": "Intelligence",
+    "findNow": "Find Now",
+    "statusLive": "Live",
+    "statusDemo": "Demo",
+    "statusChecking": "...",
+    "languageToggle": "Tamil",
+    "languageTooltip": "Switch to Tamil"
+  },
+  "home": {
+    "heroBadge": "9-Module Intelligence Engine · Tamil Nadu's Urban Response Platform",
+    "heroTitle": "Find Trusted",
+    "heroTitleSpan": "Service Experts",
+    "heroTitleEnd": "Near You — Fast",
+    "heroSubtitle": "Real-time proximity search. Verified technicians. Emergency-first. Get help in minutes.",
+    "heroSearchPlaceholder": "Describe your problem... (e.g. water leaking, no power)",
+    "heroSearchBtn": "Find Help 🔍",
+    "statVerified": "Verified Technicians",
+    "statResponse": "Avg Response Time",
+    "statDistricts": "Districts Covered",
+    "statRating": "Platform Rating",
+    "intelActive": "● 9 Intelligence Modules Active",
+    "servicesLabel": "Services",
+    "servicesTitle": "What do you need help with?",
+    "servicesSubtitle": "Click any service to instantly find the nearest available technician",
+    "whyLabel": "Why Sevai Hub",
+    "whyTitle": "Built for Speed. Designed for Safety.",
+    "whySubtitle": "Everything you need to find the right help, right now",
+    "footerTagline": "Connecting Tamil Nadu with trusted local service professionals · 2026",
+    "features": {
+      "proximity": {
+        "title": "Proximity-First Ranking",
+        "desc": "Technicians are sorted by real distance from you using PostGIS spatial indexes."
+      },
+      "verified": {
+        "title": "Verified Only",
+        "desc": "Every listed technician is identity-verified before appearing on the platform."
+      },
+      "emergency": {
+        "title": "Emergency Ready",
+        "desc": "Gas leaks, short circuits, floods — we detect urgency and prioritize nearest help."
+      },
+      "language": {
+        "title": "Tamil & English",
+        "desc": "Full support for Tamil and English so anyone can use the platform comfortably."
+      },
+      "reviews": {
+        "title": "Real Reviews",
+        "desc": "Ratings are earned through actual service completions — no fake reviews."
+      },
+      "availability": {
+        "title": "Live Availability",
+        "desc": "Technician availability is tracked in real-time — no more calling unavailable numbers."
+      }
+    },
+    "intelModules": {
+      "emergency": "Emergency Scoring",
+      "trust": "Trust Index (TTI)",
+      "radius": "Adaptive Radius",
+      "eta": "ETA Prediction",
+      "heatmap": "Demand Heatmap",
+      "performance": "Performance Index",
+      "allocation": "Weighted Allocation",
+      "simulation": "Simulation Engine",
+      "integrity": "Integrity Layer"
+    },
+    "services": {
+      "Plumber": { "name": "Plumber", "description": "Pipe leaks, tap repair, bathroom fitting" },
+      "Electrician": { "name": "Electrician", "description": "Wiring, short circuit, switchboard repair" },
+      "Gas Service": { "name": "Gas Service", "description": "Gas cylinder, pipeline repair, stove" },
+      "Bike Mechanic": { "name": "Bike Mechanic", "description": "Puncture, engine repair, oil change" },
+      "Mobile Technician": { "name": "Mobile Repair", "description": "Screen, battery, charging port fix" },
+      "Cleaning Service": { "name": "Cleaning", "description": "Home cleaning, deep clean, sofa wash" },
+      "AC Technician": { "name": "AC Technician", "description": "AC servicing, gas refill, installation" },
+      "Carpenter": { "name": "Carpenter", "description": "Furniture repair, door fitting, woodwork" },
+      "Painter": { "name": "Painter", "description": "Wall painting, waterproofing, texture" }
+    }
+  },
+  "search": {
+    "searchBtn": "🔍 Search",
+    "myLocation": "📍 My Location",
+    "problemPlaceholder": "Describe your problem (optional)...",
+    "radius3": "Within 3 km",
+    "radius5": "Within 5 km",
+    "radius8": "Within 8 km",
+    "radius15": "Within 15 km",
+    "radius30": "Within 30 km",
+    "emergencyDetected": "Emergency Service Detected",
+    "emergencyNote": "for emergencies, call the nearest technician immediately. Do NOT attempt DIY repairs.",
+    "riskLabel": "Emergency Risk Level",
+    "radiusExpanded": "Adaptive radius expanded to",
+    "radiusStepsTried": "Steps tried",
+    "locationFallback": "Location not supported. Using Chennai as default.",
+    "locationError": "Could not detect location. Using Chennai as default.",
+    "demoMode": "ℹ️ Demo mode — Intelligence scores shown from local model. Connect backend for live data.",
+    "searching": "Running adaptive geospatial search...",
+    "noTechnicians": "No technicians found",
+    "noTechSubtitle": "Try increasing the search radius or selecting a different category",
+    "foundLabel": "found",
+    "withinKm": "Within",
+    "rankedLabel": "Ranked by weighted allocation",
+    "ttiLabel": "TTI-verified ranking",
+    "riskMessages": {
+      "Critical": "🚨 CRITICAL — This is life-threatening. Call nearest technician immediately.",
+      "High": "⚠️ HIGH PRIORITY — Dispatch in progress. Do not attempt DIY repairs.",
+      "Medium": "Service required soon. Verified technician being allocated.",
+      "Low": "Routine service request. Best available technician matched."
+    }
+  },
+  "technician": {
+    "verified": "Verified",
+    "available": "Available",
+    "busy": "Busy",
+    "reviews": "reviews",
+    "experience": "yrs exp",
+    "distance": "km away",
+    "callNow": "📞 Call Now",
+    "trustScore": "Trust Score",
+    "eta": "ETA",
+    "mins": "mins",
+    "confidence": "Confidence"
+  },
+  "chat": {
+    "title": "Sevai Hub Intelligence",
+    "status": "● Online · Emergency-Aware · TTI-Powered",
+    "placeholder": "Describe your problem...",
+    "welcome": "வணக்கம்! 👋 I'm your Sevai Hub Intelligence Assistant.\n\nDescribe your problem and I'll:\n• Score your emergency risk\n• Find nearest verified technician\n• Show Trust Index + ETA",
+    "help": "I can help you find the nearest service provider! Tell me your problem — like *water leaking*, *no electricity*, *gas smell*, etc. 😊\n\nType naturally or pick a quick reply below.",
+    "findServices": "Go to **Find Services** and select",
+    "quickReplies": {
+      "water": "Water leaking 💧",
+      "electricity": "No electricity ⚡",
+      "gas": "Gas smell 🔥",
+      "bike": "Bike not starting 🏍️",
+      "ac": "AC not cooling ❄️",
+      "phone": "Phone screen broken 📱"
+    },
+    "emergency": {
+      "critical": "🚨 EMERGENCY ALERT — CRITICAL PRIORITY\n\nEmergency Risk Level: {risk}% (Critical)\n\nImmediate action required! I'm locating the nearest available **{cat}** {icon} for you.\n\n⚠️ Do NOT attempt to fix this yourself. Stay away and ensure safety first!\n\n📞 If life-threatening, call 112 (Emergency Services) immediately.",
+      "high": "⚠️ HIGH PRIORITY REQUEST\n\nEmergency Risk Level: {risk}% (High)\n\nLocating the nearest **{cat}** {icon} for you.\n\nTechnicians are ranked by Trust Index + proximity for fastest response. ✅",
+      "normal": "Got it! Service request logged.\n\nEmergency Risk Level: {risk}% ({level})\n\nFinding the best **{cat}** {icon} near you.\n\nTrust Index and proximity ranking applied. Your technician is selected for maximum reliability. ✅"
+    }
+  },
+  "language": {
+    "toggle": "தமிழ்",
+    "switchLabel": "Switch to Tamil"
+  }
+}
