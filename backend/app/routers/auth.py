@@ -247,11 +247,16 @@ def register_technician_self(
     password: str,
     email: str = None,
     service_category: str = "Plumber",
+    city: str = "Chennai",
+    address: str = None,
+    latitude: float = 13.0827,  # Chennai default
+    longitude: float = 80.2707,  # Chennai default
     db: Session = Depends(get_db),
 ):
     """
     Self-service technician registration.
     Creates record in BOTH local auth store (for offline access) and database (for dashboard access).
+    ✅ NEW: Now accepts location (latitude/longitude) — defaults to Chennai center
     """
     try:
         # Register in local store first (always works, no DB needed)
@@ -269,6 +274,10 @@ def register_technician_self(
         ) or db.query(Technician).filter(Technician.phone == phone).first()
 
         if not existing:
+            # Create location point from coordinates
+            from geoalchemy2 import func as gfunc
+            location_point = gfunc.ST_MakePoint(longitude, latitude)
+            
             new_tech = Technician(
                 id=uuid.UUID(tech_id),
                 name=name,
@@ -278,6 +287,9 @@ def register_technician_self(
                 service_category=ServiceCategory(service_category),
                 is_available=True,
                 is_verified=False,  # New technicians are unverified
+                city=city,
+                address=address or f"{city}, Tamil Nadu",
+                location=location_point,
             )
             db.add(new_tech)
             db.commit()
@@ -291,7 +303,8 @@ def register_technician_self(
         "message": "Technician registered successfully.",
         "id": tech_id,
         "name": name,
-        "note": "Your profile is unverified. Admin verification may be required for some features."
+        "location": {"latitude": latitude, "longitude": longitude, "city": city},
+        "note": "✅ Your profile is now searchable! Update your exact location in settings for better matching."
     }
 
 

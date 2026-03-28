@@ -66,6 +66,10 @@ export default function Login() {
   const [techPass,     setTechPass]     = useState("");
   const [techEmail,    setTechEmail]    = useState("");
   const [techCategory, setTechCategory] = useState("Plumber");
+  const [techCity,     setTechCity]     = useState("Chennai");
+  const [techAddress,  setTechAddress]  = useState("");
+  const [techLat,      setTechLat]      = useState(13.0827);  // Chennai center
+  const [techLon,      setTechLon]      = useState(80.2707);  // Chennai center
 
   useEffect(() => { setMounted(true); }, []);
   useEffect(() => { if (isAuthenticated && existingRole) redirectByRole(existingRole); }, [isAuthenticated, existingRole]);
@@ -79,6 +83,7 @@ export default function Login() {
     setIdentifier(""); setPassword(""); setAadhaar(""); setError(""); setSuccess("");
     setRegName(""); setRegEmail(""); setRegPhone(""); setRegPass("");
     setTechName(""); setTechPhone(""); setTechPass(""); setTechEmail(""); setTechCategory("Plumber");
+    setTechCity("Chennai"); setTechAddress(""); setTechLat(13.0827); setTechLon(80.2707);
   }
 
   function handleRoleChange(r) { setActiveRole(r); setMode("login"); resetForm(); }
@@ -117,9 +122,19 @@ export default function Login() {
       if (mode === "reg-tech" && activeRole === "technician") {
         if (!techName || !techPhone || !techPass) throw new Error("Please fill all required fields.");
         const res = await axios.post(`${API_BASE}/auth/register/technician`, null, {
-          params: { name: techName, phone: techPhone, password: techPass, email: techEmail || undefined, service_category: techCategory }
+          params: { 
+            name: techName, 
+            phone: techPhone, 
+            password: techPass, 
+            email: techEmail || undefined, 
+            service_category: techCategory,
+            city: techCity,
+            address: techAddress || undefined,
+            latitude: techLat,
+            longitude: techLon
+          }
         });
-        setSuccess(`✅ Technician account created for "${res.data.name}"! Now sign in.`);
+        setSuccess(`✅ Technician account created for "${res.data.name}"! You're now searchable in the system.`);
         setMode("login");
         setIdentifier(techPhone);
         setPassword(techPass);
@@ -292,6 +307,31 @@ export default function Login() {
                   {SERVICE_CATS.map(c => <option key={c} value={c}>{c}</option>)}
                 </select>
               </div>
+              <div className="auth-field">
+                <label>City</label>
+                <input id="tech-city" type="text" placeholder="e.g., Chennai, Bangalore"
+                  value={techCity} onChange={e => setTechCity(e.target.value)} />
+              </div>
+              <div className="auth-field">
+                <label>Address (optional)</label>
+                <input id="tech-address" type="text" placeholder="Street address or area name"
+                  value={techAddress} onChange={e => setTechAddress(e.target.value)} />
+              </div>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", fontSize: "12px", color: "var(--text-secondary)" }}>
+                <div className="auth-field">
+                  <label style={{ fontSize: "13px" }}>Latitude</label>
+                  <input id="tech-lat" type="number" step="0.0001" placeholder="13.0827"
+                    value={techLat} onChange={e => setTechLat(parseFloat(e.target.value))} />
+                </div>
+                <div className="auth-field">
+                  <label style={{ fontSize: "13px" }}>Longitude</label>
+                  <input id="tech-lon" type="number" step="0.0001" placeholder="80.2707"
+                    value={techLon} onChange={e => setTechLon(parseFloat(e.target.value))} />
+                </div>
+              </div>
+              <small style={{ color: "var(--text-tertiary)", display: "block", textAlign: "center", marginBottom: "8px" }}>
+                📍 Use your current GPS coordinates. Defaults to Chennai center.
+              </small>
               <div className="auth-field">
                 <label>Password *</label>
                 <div className="auth-field-password">
