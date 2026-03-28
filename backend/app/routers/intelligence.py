@@ -143,22 +143,58 @@ DEMAND_ZONES = [
     {"zone": "Kodambakkam",     "lat": 13.0533, "lon": 80.2214, "demand_score": 72, "peak_hour": "10:00–14:00", "top_service": "Mobile Technician"},
 ]
 
+def _haversine_km(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
+    """Return geodesic distance in km between two (lat, lon) points."""
+    R = 6371.0
+    dlat = math.radians(lat2 - lat1)
+    dlon = math.radians(lon2 - lon1)
+    a = math.sin(dlat / 2) ** 2 + math.cos(math.radians(lat1)) * math.cos(math.radians(lat2)) * math.sin(dlon / 2) ** 2
+    return R * 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+
+
 @router.get("/heatmap")
-def service_demand_heatmap():
-    """Urban service demand heatmap with zone-level demand scores."""
-    high_demand = [z for z in DEMAND_ZONES if z["demand_score"] >= 80]
-    medium_demand = [z for z in DEMAND_ZONES if 60 <= z["demand_score"] < 80]
+def service_demand_heatmap(
+    lat: float = Query(None, description="User latitude for proximity sorting"),
+    lon: float = Query(None, description="User longitude for proximity sorting"),
+):
+    """
+    Urban service demand heatmap with zone-level demand scores.
+    If lat/lon are provided, each zone is annotated with distance_km from the
+    user and sorted by proximity. Zones within 15 km are flagged as nearby.
+    """
+    zones = []
+    for z in DEMAND_ZONES:
+        zone = dict(z)
+        if lat is not None and lon is not None:
+            dist = round(_haversine_km(lat, lon, z["lat"], z["lon"]), 1)
+            zone["distance_km"] = dist
+            zone["is_nearby"] = dist <= 15.0
+        else:
+            zone["distance_km"] = None
+            zone["is_nearby"] = False
+        zones.append(zone)
+
+    # Sort: if location given → by distance, else by demand score desc
+    if lat is not None and lon is not None:
+        zones.sort(key=lambda z: z["distance_km"])
+    else:
+        zones.sort(key=lambda z: z["demand_score"], reverse=True)
+
+    high_demand   = [z for z in zones if z["demand_score"] >= 80]
+    medium_demand = [z for z in zones if 60 <= z["demand_score"] < 80]
+
     return {
-        "heatmap_zones":    DEMAND_ZONES,
-        "high_demand_zones": high_demand,
+        "heatmap_zones":       zones,
+        "high_demand_zones":   high_demand,
         "medium_demand_zones": medium_demand,
         "peak_emergency_hours": ["07:00–09:00", "18:00–21:00"],
         "emergency_clustering": {
-            "gas_leaks":    {"primary_zone": "Porur–Guindy corridor", "avg_response_time_mins": 14},
-            "electrical":   {"primary_zone": "T.Nagar–Anna Nagar corridor", "avg_response_time_mins": 18},
-            "plumbing":     {"primary_zone": "Velachery–Tambaram corridor", "avg_response_time_mins": 22},
+            "gas_leaks":  {"primary_zone": "Porur–Guindy corridor",        "avg_response_time_mins": 14},
+            "electrical": {"primary_zone": "T.Nagar–Anna Nagar corridor",  "avg_response_time_mins": 18},
+            "plumbing":   {"primary_zone": "Velachery–Tambaram corridor",  "avg_response_time_mins": 22},
         },
         "total_zones_tracked": len(DEMAND_ZONES),
+        "user_location": {"lat": lat, "lon": lon} if lat is not None else None,
     }
 
 

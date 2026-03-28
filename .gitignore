@@ -1,0 +1,114 @@
+# ============================================================================
+# Environment variables (NEVER commit these with real secrets)
+# ============================================================================
+.env
+.env.local
+.env.*.local
+.env.production
+.env.development
+
+# ============================================================================
+# Backend - Python
+# ============================================================================
+backend/venv/
+backend/.venv/
+backend/env/
+backend/__pycache__/
+backend/app/__pycache__/
+backend/app/*/__pycache__/
+backend/*.egg-info/
+backend/dist/
+backend/build/
+backend/.pytest_cache/
+backend/.coverage
+backend/htmlcov/
+backend/*.pyc
+backend/*.pyo
+backend/*.pyd
+backend/.Python
+backend/local_auth.json    # Contains user credentials - never commit!
+
+# Database
+backend/alembic/versions/__pycache__/
+
+# ============================================================================
+# Frontend - Node.js / React
+# ============================================================================
+frontend/node_modules/
+frontend/dist/
+frontend/dist-ssr/
+frontend/.dist/
+frontend/*.local
+frontend/.cache
+frontend/build/
+frontend/coverage/
+
+# ============================================================================
+# IDE / Editor
+# ============================================================================
+.vscode/
+.vscode-server/
+.idea/
+*.swp
+*.swo
+*.swn
+*~
+.DS_Store
+*.sublime-project
+*.sublime-workspace
+.atom/
+.project
+.settings/
+.classpath
+
+# ============================================================================
+# Logs
+# ============================================================================
+*.log
+*.log.*
+logs/
+npm-debug.log
+npm-debug.log.*
+yarn-error.log
+yarn-debug.log
+
+# ============================================================================
+# OS Files
+# ============================================================================
+Thumbs.db
+.AppleDouble
+.LSOverride
+*.sublime-settings
+
+# ============================================================================
+# Docker
+# ============================================================================
+*.dockerfile
+docker-compose.override.yml
+
+# ============================================================================
+# Temporary Files
+# ============================================================================
+*.tmp
+*.temp
+*.bak
+*.backup
+*.swp
+*~
+.git-credentials
+
+# ============================================================================
+# Admin/Sensitive Data
+# ============================================================================
+admin_credentials.json
+secrets.yml
+credentials.json
+.aws/credentials
+.ssh/
+
+# ============================================================================
+# Coverage and Testing
+# ============================================================================
+.nyc_output/
+coverage/
+.coverage.*

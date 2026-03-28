@@ -10,7 +10,18 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from app.database import SessionLocal, engine, Base
 from app.models.technician import Technician, ServiceCategory
+from app.models.user import User, UserRole
 from app.core.security import get_password_hash
+
+DEMO_USERS_DATA = [
+    {
+        "name": "Demo User",
+        "email": "user@demo.com",
+        "phone": "1234567890",
+        "password": "demo123",
+        "role": UserRole.USER,
+    },
+]
 
 Base.metadata.create_all(bind=engine)
 
@@ -188,12 +199,31 @@ TECHNICIANS = [
 ]
 
 
+
 def seed():
     db = SessionLocal()
     try:
+        # ── Seed demo users ──────────────────────────────────────────────────
+        user_count = db.query(User).count()
+        if user_count == 0:
+            for u in DEMO_USERS_DATA:
+                db.add(User(
+                    name=u["name"],
+                    email=u["email"],
+                    phone=u["phone"],
+                    hashed_password=get_password_hash(u["password"]),
+                    role=u["role"],
+                    is_active=True,
+                ))
+            db.commit()
+            print(f"✅ Seeded {len(DEMO_USERS_DATA)} demo user(s).")
+        else:
+            print(f"⚠️  DB already has {user_count} user(s). Skipping user seed.")
+
+        # ── Seed technicians ─────────────────────────────────────────────────
         existing = db.query(Technician).count()
         if existing > 0:
-            print(f"⚠️  DB already has {existing} technicians. Skipping seed.")
+            print(f"⚠️  DB already has {existing} technicians. Skipping technician seed.")
             return
 
         for t in TECHNICIANS:

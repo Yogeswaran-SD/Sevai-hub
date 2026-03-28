@@ -1,0 +1,193 @@
+{
+  "users": {
+    "1234567890": {
+      "id": "demo-user-001",
+      "name": "Demo User",
+      "email": "user@demo.com",
+      "phone": "1234567890",
+      "hpw": "$2b$10$AB5mijJxWnci1XgisZD/Ie4LXrzHGLRyGBzGC7SlnFJbBHn3pGUEu",
+      "role": "user",
+      "is_active": true
+    },
+    "user@demo.com": {
+      "id": "demo-user-001",
+      "name": "Demo User",
+      "email": "user@demo.com",
+      "phone": "1234567890",
+      "hpw": "$2b$10$AB5mijJxWnci1XgisZD/Ie4LXrzHGLRyGBzGC7SlnFJbBHn3pGUEu",
+      "role": "user",
+      "is_active": true
+    },
+    "1230654987": {
+      "id": "76aed651-e47f-48ca-a5e8-3816737ba889",
+      "name": "Yogi",
+      "email": "yogeswaran.cse@gmail.com",
+      "phone": "1230654987",
+      "hpw": "$2b$12$O.QMRKthGq1mU0ynVUUXD.P8tn3YOf3r8xhWmQGGGydRWjaQKsBVm",
+      "role": "user",
+      "is_active": true
+    },
+    "yogeswaran.cse@gmail.com": {
+      "id": "76aed651-e47f-48ca-a5e8-3816737ba889",
+      "name": "Yogi",
+      "email": "yogeswaran.cse@gmail.com",
+      "phone": "1230654987",
+      "hpw": "$2b$12$O.QMRKthGq1mU0ynVUUXD.P8tn3YOf3r8xhWmQGGGydRWjaQKsBVm",
+      "role": "user",
+      "is_active": true
+    }
+  },
+  "technicians": {
+    "9876543210": {
+      "id": "demo-tech-001",
+      "name": "Ravi Kumar",
+      "email": "ravi@demo.com",
+      "phone": "9876543210",
+      "hpw": "$2b$10$GXEbr5aomVclxWEvnUe47es9f4lyhrTuWHrDt4t7zJxOxO9j6nFpC",
+      "role": "technician"
+    },
+    "9876543211": {
+      "id": "demo-tech-002",
+      "name": "Murugan S",
+      "email": null,
+      "phone": "9876543211",
+      "hpw": "$2b$10$GXEbr5aomVclxWEvnUe47es9f4lyhrTuWHrDt4t7zJxOxO9j6nFpC",
+      "role": "technician"
+    },
+    "9876543220": {
+      "id": "demo-tech-003",
+      "name": "Arjun Electricals",
+      "email": null,
+      "phone": "9876543220",
+      "hpw": "$2b$10$GXEbr5aomVclxWEvnUe47es9f4lyhrTuWHrDt4t7zJxOxO9j6nFpC",
+      "role": "technician"
+    },
+    "9876543230": {
+      "id": "demo-tech-004",
+      "name": "Safe Gas Service",
+      "email": null,
+      "phone": "9876543230",
+      "hpw": "$2b$10$GXEbr5aomVclxWEvnUe47es9f4lyhrTuWHrDt4t7zJxOxO9j6nFpC",
+      "role": "technician"
+    },
+    "9876543240": {
+      "id": "demo-tech-005",
+      "name": "Speed Bike Works",
+      "email": null,
+      "phone": "9876543240",
+      "hpw": "$2b$10$GXEbr5aomVclxWEvnUe47es9f4lyhrTuWHrDt4t7zJxOxO9j6nFpC",
+      "role": "technician"
+    },
+    "9876543250": {
+      "id": "demo-tech-006",
+      "name": "Phone Doctor",
+      "email": null,
+      "phone": "9876543250",
+      "hpw": "$2b$10$GXEbr5aomVclxWEvnUe47es9f4lyhrTuWHrDt4t7zJxOxO9j6nFpC",
+      "role": "technician"
+    },
+    "9876543260": {
+      "id": "demo-tech-007",
+      "name": "CleanHome TN",
+      "email": null,
+      "phone": "9876543260",
+      "hpw": "$2b$10$GXEbr5aomVclxWEvnUe47es9f4lyhrTuWHrDt4t7zJxOxO9j6nFpC",
+      "role": "technician"
+    },
+    "9876543270": {
+      "id": "demo-tech-008",
+      "name": "Cool Air Services",
+      "email": null,
+      "phone": "9876543270",
+      "hpw": "$2b$10$GXEbr5aomVclxWEvnUe47es9f4lyhrTuWHrDt4t7zJxOxO9j6nFpC",
+      "role": "technician"
+    },
+    "9876543280": {
+      "id": "demo-tech-009",
+      "name": "Kumar Carpentry",
+      "email": null,
+      "phone": "9876543280",
+      "hpw": "$2b$10$GXEbr5aomVclxWEvnUe47es9f4lyhrTuWHrDt4t7zJxOxO9j6nFpC",
+      "role": "technician"
+    },
+    "9876543290": {
+      "id": "demo-tech-010",
+      "name": "ColorCraft TN",
+      "email": null,
+      "phone": "9876543290",
+      "hpw": "$2b$10$GXEbr5aomVclxWEvnUe47es9f4lyhrTuWHrDt4t7zJxOxO9j6nFpC",
+      "role": "technician"
+    },
+    "ravi@demo.com": {
+      "id": "demo-tech-001",
+      "name": "Ravi Kumar",
+      "email": "ravi@demo.com",
+      "phone": "9876543210",
+      "hpw": "$2b$10$GXEbr5aomVclxWEvnUe47es9f4lyhrTuWHrDt4t7zJxOxO9j6nFpC",
+      "role": "technician"
+    },
+    "9871234560": {
+      "id": "8b3a4a20-179a-4ad8-bc75-202e73db8ae2",
+      "name": "Yogi Tech",
+      "email": null,
+      "phone": "9871234560",
+      "hpw": "$2b$12$nHxbLcU1CnG.JszJ.DkyCO9lhn5m/RznleAf4o2uwIi5fA.Rd3sxy",
+      "role": "technician",
+      "service_category": "Electrician"
+    },
+    "7894561230": {
+      "id": "b321c722-5e32-49b7-b158-567824beb99a",
+      "name": "Yogi",
+      "email": "yogeswaran.cse@gmail.com",
+      "phone": "7894561230",
+      "hpw": "$2b$12$32CxSbw5RIKDC.7iNQCsUubyMj8HHNaXyUtJZpMOfEc87t3lUpNP6",
+      "role": "technician",
+      "service_category": "Gas Service"
+    },
+    "yogeswaran.cse@gmail.com": {
+      "id": "b321c722-5e32-49b7-b158-567824beb99a",
+      "name": "Yogi",
+      "email": "yogeswaran.cse@gmail.com",
+      "phone": "7894561230",
+      "hpw": "$2b$12$32CxSbw5RIKDC.7iNQCsUubyMj8HHNaXyUtJZpMOfEc87t3lUpNP6",
+      "role": "technician",
+      "service_category": "Gas Service"
+    },
+    "7708029737": {
+      "id": "34481d9b-74b8-490b-8d3b-9b3c31b6742f",
+      "name": "Yogi",
+      "email": "y1586544@gmail.com",
+      "phone": "7708029737",
+      "hpw": "$2b$12$2Z40XlpcrNMUACg6aodQye896xtxJfvCZ2MyUyyGmFc7jqhrc52RK",
+      "role": "technician",
+      "service_category": "Gas Service"
+    },
+    "y1586544@gmail.com": {
+      "id": "34481d9b-74b8-490b-8d3b-9b3c31b6742f",
+      "name": "Yogi",
+      "email": "y1586544@gmail.com",
+      "phone": "7708029737",
+      "hpw": "$2b$12$2Z40XlpcrNMUACg6aodQye896xtxJfvCZ2MyUyyGmFc7jqhrc52RK",
+      "role": "technician",
+      "service_category": "Gas Service"
+    },
+    "8489584737": {
+      "id": "e35dd205-f048-4355-a099-1ceeeaeb9d4e",
+      "name": "Yogeswaran",
+      "email": "yogeswaran.developer@gmail.com",
+      "phone": "8489584737",
+      "hpw": "$2b$12$Mnim1nFdXt3pN3v.I67S4ea..y3T3MqUX7KBisfLVZILez6w9Dzgu",
+      "role": "technician",
+      "service_category": "Bike Mechanic"
+    },
+    "yogeswaran.developer@gmail.com": {
+      "id": "e35dd205-f048-4355-a099-1ceeeaeb9d4e",
+      "name": "Yogeswaran",
+      "email": "yogeswaran.developer@gmail.com",
+      "phone": "8489584737",
+      "hpw": "$2b$12$Mnim1nFdXt3pN3v.I67S4ea..y3T3MqUX7KBisfLVZILez6w9Dzgu",
+      "role": "technician",
+      "service_category": "Bike Mechanic"
+    }
+  }
+}

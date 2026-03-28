@@ -1,0 +1,51 @@
+# Backend .dockerignore - Exclude unnecessary files from Docker build context
+
+# Python
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv
+pip-log.txt
+pip-delete-this-directory.txt
+.coverage
+.pytest_cache
+*.egg-info/
+dist/
+build/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*.code-workspace
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Local auth store (optional - exclude sensitive data)
+# local_auth.json
+
+# Documentation
+*.md
+docs/
+
+# Testing
+.pytest_cache/
+htmlcov/
+.coverage
