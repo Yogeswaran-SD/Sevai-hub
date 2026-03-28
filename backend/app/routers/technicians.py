@@ -99,7 +99,7 @@ def _spatial_query(db: Session, lat: float, lon: float, category: str, radius_m:
 def get_nearby_technicians(
     latitude:         float           = Query(..., ge=-90,  le=90),
     longitude:        float           = Query(..., ge=-180, le=180),
-    service_category: ServiceCategory = Query(...),
+    service_category: str             = Query(...),
     radius_km:        float           = Query(3.0, ge=1, le=100),
     urgency_level:    str             = Query("Low"),
     emergency_query:  Optional[str]   = Query(None),
@@ -113,6 +113,13 @@ def get_nearby_technicians(
       • ETA prediction per technician
       • Weighted Allocation ranking
     """
+    # Convert service_category string to enum value
+    try:
+        category_enum = ServiceCategory(service_category)
+        category_value = category_enum.value
+    except ValueError:
+        raise HTTPException(status_code=400, detail=f"Invalid service category: {service_category}")
+    
     emerg_risk    = compute_emergency_risk(emergency_query or urgency_level)
     radius_steps  = get_adaptive_radius_steps(radius_km)
     rows          = []
@@ -120,7 +127,7 @@ def get_nearby_technicians(
     expanded      = False
 
     for step in radius_steps:
-        rows = _spatial_query(db, latitude, longitude, service_category.value, step * 1000)
+        rows = _spatial_query(db, latitude, longitude, category_value, step * 1000)
         final_radius = step
         if rows:
             expanded = step > radius_steps[0]

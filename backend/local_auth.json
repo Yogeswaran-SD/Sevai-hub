@@ -35,6 +35,24 @@
       "hpw": "$2b$12$O.QMRKthGq1mU0ynVUUXD.P8tn3YOf3r8xhWmQGGGydRWjaQKsBVm",
       "role": "user",
       "is_active": true
+    },
+    "9626443419": {
+      "id": "9b4bae61-6310-4bc9-94cd-59a18482000c",
+      "name": "yogi",
+      "email": "y1586544@gmail.com",
+      "phone": "9626443419",
+      "hpw": "$2b$12$aTiX1V34D1KYgKGYLYeFTuE8BfGgZjsUwAfRoHsMBrZbVq9icn4yW",
+      "role": "user",
+      "is_active": true
+    },
+    "y1586544@gmail.com": {
+      "id": "9b4bae61-6310-4bc9-94cd-59a18482000c",
+      "name": "yogi",
+      "email": "y1586544@gmail.com",
+      "phone": "9626443419",
+      "hpw": "$2b$12$aTiX1V34D1KYgKGYLYeFTuE8BfGgZjsUwAfRoHsMBrZbVq9icn4yW",
+      "role": "user",
+      "is_active": true
     }
   },
   "technicians": {
@@ -186,6 +204,24 @@
       "email": "yogeswaran.developer@gmail.com",
       "phone": "8489584737",
       "hpw": "$2b$12$Mnim1nFdXt3pN3v.I67S4ea..y3T3MqUX7KBisfLVZILez6w9Dzgu",
+      "role": "technician",
+      "service_category": "Bike Mechanic"
+    },
+    "9626443419": {
+      "id": "23dd852e-28d3-480f-9a02-a3803d9a2c6d",
+      "name": "Yogeswaran s",
+      "email": "nirmalsd79@gmail.com",
+      "phone": "9626443419",
+      "hpw": "$2b$12$BAiAQsjdzheembUjtGHgvOy77khreqWG0o6DyiitkGCVmc1QDQ1uK",
+      "role": "technician",
+      "service_category": "Bike Mechanic"
+    },
+    "nirmalsd79@gmail.com": {
+      "id": "23dd852e-28d3-480f-9a02-a3803d9a2c6d",
+      "name": "Yogeswaran s",
+      "email": "nirmalsd79@gmail.com",
+      "phone": "9626443419",
+      "hpw": "$2b$12$BAiAQsjdzheembUjtGHgvOy77khreqWG0o6DyiitkGCVmc1QDQ1uK",
       "role": "technician",
       "service_category": "Bike Mechanic"
     }

@@ -26,8 +26,15 @@ def user_dashboard(db: Session = Depends(get_db), current=Depends(require_user))
 
 @router.get("/technician")
 def technician_dashboard(db: Session = Depends(get_db), current=Depends(require_technician)):
+    import uuid
     tech_id = current.get("sub")
-    tech = db.query(Technician).filter(Technician.id == tech_id).first()
+    # Convert string ID to UUID
+    try:
+        tech_uuid = uuid.UUID(tech_id) if isinstance(tech_id, str) else tech_id
+    except (ValueError, TypeError):
+        tech_uuid = tech_id
+    
+    tech = db.query(Technician).filter(Technician.id == tech_uuid).first()
     
     # If not found in DB, technician must be in local store only (backwards compatibility)
     if not tech:
@@ -48,7 +55,7 @@ def technician_dashboard(db: Session = Depends(get_db), current=Depends(require_
     
     return {
         "role": "technician",
-        "technician_id": tech_id,
+        "technician_id": str(tech.id),
         "name": tech.name,
         "email": tech.email,
         "phone": tech.phone,
@@ -57,4 +64,35 @@ def technician_dashboard(db: Session = Depends(get_db), current=Depends(require_
         "rating": tech.rating,
         "service_category": str(tech.service_category.value if hasattr(tech.service_category, 'value') else tech.service_category),
         "city": tech.city,
+    }
+
+
+@router.get("/admin")
+def admin_dashboard(db: Session = Depends(get_db), current=Depends(require_user)):
+    """Admin dashboard with platform statistics."""
+    # Verify admin role
+    if current.get("role") != "admin":
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    # Get platform statistics
+    total_users = db.query(User).count()
+    total_technicians = db.query(Technician).count()
+    verified_technicians = db.query(Technician).filter(Technician.is_verified == True).count()
+    available_technicians = db.query(Technician).filter(Technician.is_available == True).count()
+    
+    return {
+        "role": "admin",
+        "user_id": current.get("sub"),
+        "name": current.get("name"),
+        "platform_stats": {
+            "total_users": total_users,
+            "total_technicians": total_technicians,
+            "verified_technicians": verified_technicians,
+            "available_technicians": available_technicians,
+            "platform_status": "operational",
+        },
+        "available_services": [
+            "Plumber", "Electrician", "Gas Service", "Bike Mechanic",
+            "Mobile Technician", "Cleaning Service", "AC Technician", "Carpenter", "Painter"
+        ],
     }
