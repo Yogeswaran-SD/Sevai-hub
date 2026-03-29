@@ -224,6 +224,24 @@
       "hpw": "$2b$12$BAiAQsjdzheembUjtGHgvOy77khreqWG0o6DyiitkGCVmc1QDQ1uK",
       "role": "technician",
       "service_category": "Bike Mechanic"
+    },
+    "9176615001": {
+      "id": "4f6faacc-2966-492c-964d-8a2907a2d469",
+      "name": "Yogi",
+      "email": "kiyo.cse@gmail.com",
+      "phone": "9176615001",
+      "hpw": "$2b$12$Abl8Gdt3pF5zKphHwpRSvuPCOABmqL3zeWDregc2TxbSupw0UNCf6",
+      "role": "technician",
+      "service_category": "Electrician"
+    },
+    "kiyo.cse@gmail.com": {
+      "id": "4f6faacc-2966-492c-964d-8a2907a2d469",
+      "name": "Yogi",
+      "email": "kiyo.cse@gmail.com",
+      "phone": "9176615001",
+      "hpw": "$2b$12$Abl8Gdt3pF5zKphHwpRSvuPCOABmqL3zeWDregc2TxbSupw0UNCf6",
+      "role": "technician",
+      "service_category": "Electrician"
     }
   }
 }

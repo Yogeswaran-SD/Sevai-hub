@@ -101,6 +101,30 @@ export default function Login() {
     setMode("login");
   }
 
+  // ─── Geolocation helper for technician login ───────────────────────────────
+  function getLocationForTechnicianLogin() {
+    return new Promise((resolve) => {
+      if (!navigator.geolocation) {
+        console.warn("Geolocation not supported");
+        resolve({ latitude: null, longitude: null });
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          console.log(`📍 Captured location: ${latitude}, ${longitude}`);
+          resolve({ latitude, longitude });
+        },
+        (error) => {
+          console.warn("Geolocation error:", error.message);
+          resolve({ latitude: null, longitude: null });
+        },
+        { timeout: 5000, enableHighAccuracy: true }
+      );
+    });
+  }
+
   async function handleSubmit(e) {
     e.preventDefault();
     setError(""); setSuccess(""); setLoading(true);
@@ -145,8 +169,13 @@ export default function Login() {
       // ── Login ─────────────────────────────────────────────────────────────
       let res;
       if (activeRole === "user")       res = await loginUser(identifier, password);
-      else if (activeRole === "technician") res = await loginTechnician(identifier, password);
-      else                              res = await loginAdmin(identifier, aadhaar, password);
+      else if (activeRole === "technician") {
+        // Auto-capture geolocation for technician login
+        setError("📍 Capturing your location...");
+        const { latitude, longitude } = await getLocationForTechnicianLogin();
+        setError("");
+        res = await loginTechnician(identifier, password, latitude, longitude);
+      } else                              res = await loginAdmin(identifier, aadhaar, password);
 
       const { access_token, user: userData } = res.data;
       login(access_token, userData);

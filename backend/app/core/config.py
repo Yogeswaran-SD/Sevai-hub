@@ -27,7 +27,7 @@ class Settings(BaseSettings):
     ADMIN_PASSWORD_HASH: str           # HASHED password using bcrypt (NOT plaintext!)
     
     # CORS Configuration (REQUIRED - use env for production)
-    CORS_ORIGINS: Optional[str] = "http://localhost:3000,http://localhost:5173"  # Comma-separated
+    CORS_ORIGINS: Optional[str] = "http://localhost:3000,http://localhost:5173,http://localhost:5174,http://127.0.0.1:5174"  # Comma-separated
     
     # Redis Cache
     REDIS_URL: str = "redis://localhost:6379"
@@ -58,7 +58,7 @@ class Settings(BaseSettings):
 
     class Config:
         env_file = ".env"
-        extra = "forbid"  # Reject unknown environment variables
+        extra = "ignore"  # Ignore unknown environment variables (allows VITE_* and docker-specific vars)
         case_sensitive = True
 
     @property

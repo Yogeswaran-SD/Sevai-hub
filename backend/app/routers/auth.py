@@ -196,6 +196,15 @@ def login_technician(credentials: TechnicianLoginRequest, db: Session = Depends(
         if not verify_password(password, tech.hashed_password):
             raise HTTPException(status_code=401, detail="Incorrect password.")
 
+        # ── Update location on login if provided ───────────────────────────────
+        if credentials.latitude is not None and credentials.longitude is not None:
+            try:
+                tech.location = f"SRID=4326;POINT({credentials.longitude} {credentials.latitude})"
+                db.commit()
+                db.refresh(tech)
+            except Exception:
+                pass  # Location update failed, but continue with login
+
         # Cache in local store for future offline use
         try:
             local_store.register_technician(

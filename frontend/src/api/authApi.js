@@ -14,8 +14,8 @@ export function loginUser(identifier, password) {
   return axios.post(`${BASE}/auth/login/user`, { identifier, password });
 }
 
-export function loginTechnician(identifier, password) {
-  return axios.post(`${BASE}/auth/login/technician`, { identifier, password });
+export function loginTechnician(identifier, password, latitude = null, longitude = null) {
+  return axios.post(`${BASE}/auth/login/technician`, { identifier, password, latitude, longitude });
 }
 
 export function loginAdmin(mobile, aadhaar, password) {

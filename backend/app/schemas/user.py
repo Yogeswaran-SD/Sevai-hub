@@ -31,8 +31,10 @@ class UserLoginRequest(BaseModel):
     password: str
 
 class TechnicianLoginRequest(BaseModel):
-    identifier: str   # email or phone
+    identifier: str              # email or phone
     password: str
+    latitude: Optional[float] = None    # Auto-captured from device geolocation
+    longitude: Optional[float] = None   # Auto-captured from device geolocation
 
 # ─── Admin Login (high-security) ──────────────────────────────────────────────
 
