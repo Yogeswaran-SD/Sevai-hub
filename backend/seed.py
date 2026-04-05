@@ -54,6 +54,42 @@ TECHNICIANS = [
         "cancellation_rate": 0.10, "response_delay_avg": 22.0,
         "rating_stability": 0.67, "availability_score": 0.65, "verification_age_days": 180,
     },
+    {
+        "name": "Praveen Plumber", "phone": "9876543312",
+        "service_category": ServiceCategory.PLUMBER,
+        "rating": 4.6, "total_reviews": 95, "is_available": True, "is_verified": True,
+        "experience_years": 6, "city": "Coimbatore", "address": "Gandhipuram, Coimbatore",
+        "latitude": 11.0168, "longitude": 76.9558,
+        "cancellation_rate": 0.04, "response_delay_avg": 13.0,
+        "rating_stability": 0.85, "availability_score": 0.89, "verification_age_days": 400,
+    },
+    {
+        "name": "Dinesh Plumbing", "phone": "9876543313",
+        "service_category": ServiceCategory.PLUMBER,
+        "rating": 4.4, "total_reviews": 67, "is_available": True, "is_verified": True,
+        "experience_years": 4, "city": "Coimbatore", "address": "Peelamedu, Coimbatore",
+        "latitude": 10.9629, "longitude": 76.9589,
+        "cancellation_rate": 0.07, "response_delay_avg": 16.0,
+        "rating_stability": 0.76, "availability_score": 0.80, "verification_age_days": 280,
+    },
+    {
+        "name": "Mani Plumber", "phone": "9876543314",
+        "service_category": ServiceCategory.PLUMBER,
+        "rating": 4.7, "total_reviews": 112, "is_available": True, "is_verified": True,
+        "experience_years": 8, "city": "Erode", "address": "Perundurai, Erode",
+        "latitude": 11.3441, "longitude": 77.7064,
+        "cancellation_rate": 0.02, "response_delay_avg": 9.0,
+        "rating_stability": 0.91, "availability_score": 0.94, "verification_age_days": 520,
+    },
+    {
+        "name": "Karthik Plumber", "phone": "9876543315",
+        "service_category": ServiceCategory.PLUMBER,
+        "rating": 4.3, "total_reviews": 71, "is_available": True, "is_verified": False,
+        "experience_years": 3, "city": "Madurai", "address": "Avaniyapuram, Madurai",
+        "latitude": 9.9252, "longitude": 78.1198,
+        "cancellation_rate": 0.08, "response_delay_avg": 18.0,
+        "rating_stability": 0.73, "availability_score": 0.77, "verification_age_days": 0,
+    },
 
     # ── Electricians ──────────────────────────────────────────────────────────
     {
@@ -82,6 +118,24 @@ TECHNICIANS = [
         "latitude": 11.0000, "longitude": 76.9500,
         "cancellation_rate": 0.12, "response_delay_avg": 25.0,
         "rating_stability": 0.70, "availability_score": 0.72, "verification_age_days": 0,
+    },
+    {
+        "name": "Ramesh Electrical", "phone": "9876543323",
+        "service_category": ServiceCategory.ELECTRICIAN,
+        "rating": 4.5, "total_reviews": 88, "is_available": True, "is_verified": True,
+        "experience_years": 5, "city": "Coimbatore", "address": "Nanjundaswamy Layout, Coimbatore",
+        "latitude": 11.0500, "longitude": 76.8800,
+        "cancellation_rate": 0.05, "response_delay_avg": 14.0,
+        "rating_stability": 0.81, "availability_score": 0.85, "verification_age_days": 350,
+    },
+    {
+        "name": "Sathish Electric", "phone": "9876543324",
+        "service_category": ServiceCategory.ELECTRICIAN,
+        "rating": 4.7, "total_reviews": 145, "is_available": True, "is_verified": True,
+        "experience_years": 7, "city": "Erode", "address": "Modakkurichi, Erode",
+        "latitude": 11.3200, "longitude": 77.8000,
+        "cancellation_rate": 0.03, "response_delay_avg": 10.0,
+        "rating_stability": 0.89, "availability_score": 0.92, "verification_age_days": 480,
     },
 
     # ── Gas Service ───────────────────────────────────────────────────────────
@@ -226,18 +280,32 @@ def seed():
             print(f"⚠️  DB already has {existing} technicians. Skipping technician seed.")
             return
 
+        from sqlalchemy import text
+        
+        # Create technicians with coords to update later
+        coords_to_update = []
+        
         for t in TECHNICIANS:
             lat = t.pop("latitude")
             lon = t.pop("longitude")
-            location = f"SRID=4326;POINT({lon} {lat})"
             tech = Technician(
                 **t,
                 email=None,
                 hashed_password=get_password_hash("Sevai@123"),
                 bio=f"Experienced {t['service_category'].value} serving {t['city']} with {t['experience_years']} years of expertise.",
-                location=location,
+                location=None,
             )
             db.add(tech)
+            db.flush()
+            coords_to_update.append((tech.id, lat, lon))
+
+        # Update all locations using ST_GeogFromText
+        for tech_id, lat, lon in coords_to_update:
+            location_wkt = f"SRID=4326;POINT({lon} {lat})"
+            db.execute(
+                text("UPDATE technicians SET location = ST_GeogFromText(:wkt) WHERE id = :id"),
+                {"wkt": location_wkt, "id": str(tech_id)}
+            )
 
         db.commit()
         print(f"✅ Seeded {len(TECHNICIANS)} technicians with TTI data successfully!")

@@ -53,6 +53,42 @@
       "hpw": "$2b$12$aTiX1V34D1KYgKGYLYeFTuE8BfGgZjsUwAfRoHsMBrZbVq9icn4yW",
       "role": "user",
       "is_active": true
+    },
+    "8489584737": {
+      "id": "d1782610-c48e-4762-a581-e98c2f4a9e4b",
+      "name": "Yogeswaran S",
+      "email": null,
+      "phone": "8489584737",
+      "hpw": "$2b$12$CiKmvSAohrv8vX3L5t2V5O3hh9B5h4.KzL3r4rc5ZbwWbHdpDQ3Qa",
+      "role": "user",
+      "is_active": true
+    },
+    "8765432100": {
+      "id": "4d71b761-ff21-4d15-a543-29b8bc4fb8f0",
+      "name": "John Watson",
+      "email": "john.watson@example.com",
+      "phone": "8765432100",
+      "hpw": "$2b$12$PkGEv.TytI.2LIHxA28DDOIR6U3PSEdj5vjG3rXw66JBYynTT/zuW",
+      "role": "user",
+      "is_active": true
+    },
+    "john.watson@example.com": {
+      "id": "4d71b761-ff21-4d15-a543-29b8bc4fb8f0",
+      "name": "John Watson",
+      "email": "john.watson@example.com",
+      "phone": "8765432100",
+      "hpw": "$2b$12$PkGEv.TytI.2LIHxA28DDOIR6U3PSEdj5vjG3rXw66JBYynTT/zuW",
+      "role": "user",
+      "is_active": true
+    },
+    "7200846038": {
+      "id": "e9894cd5-489a-4ebf-a7ae-c1901d8f88e5",
+      "name": "yogi",
+      "email": null,
+      "phone": "7200846038",
+      "hpw": "$2b$12$MBso.p5YaG/eHvfkHU/QRusfGKcy9nlSvCTPV96gnmn.eITW0BRaK",
+      "role": "user",
+      "is_active": true
     }
   },
   "technicians": {
@@ -242,6 +278,96 @@
       "hpw": "$2b$12$Abl8Gdt3pF5zKphHwpRSvuPCOABmqL3zeWDregc2TxbSupw0UNCf6",
       "role": "technician",
       "service_category": "Electrician"
+    },
+    "0102030405": {
+      "id": "bf4229cf-e2b7-45eb-8405-30724931bc92",
+      "name": "Yogi SD",
+      "email": "sd.yogi.official@gmail.com",
+      "phone": "0102030405",
+      "hpw": "$2b$12$mzgzsniz8W9uEtZ29WDWl.aFDYDVB.EsEa0Kykzu8mbVO6bxTc/zm",
+      "role": "technician",
+      "service_category": "Gas Service"
+    },
+    "sd.yogi.official@gmail.com": {
+      "id": "bf4229cf-e2b7-45eb-8405-30724931bc92",
+      "name": "Yogi SD",
+      "email": "sd.yogi.official@gmail.com",
+      "phone": "0102030405",
+      "hpw": "$2b$12$mzgzsniz8W9uEtZ29WDWl.aFDYDVB.EsEa0Kykzu8mbVO6bxTc/zm",
+      "role": "technician",
+      "service_category": "Gas Service"
+    },
+    "7654321098": {
+      "id": "4a4975d2-73ef-4390-ad85-b363a52b2c74",
+      "name": "Ramesh Electrician",
+      "email": "ramesh.elec@example.com",
+      "phone": "7654321098",
+      "hpw": "$2b$12$OXUywWeoxu7/oeGpPj/T4utkxUsHobV0JbVLhGvCmi6/MTkKbvi4a",
+      "role": "technician",
+      "service_category": "Electrician"
+    },
+    "ramesh.elec@example.com": {
+      "id": "4a4975d2-73ef-4390-ad85-b363a52b2c74",
+      "name": "Ramesh Electrician",
+      "email": "ramesh.elec@example.com",
+      "phone": "7654321098",
+      "hpw": "$2b$12$OXUywWeoxu7/oeGpPj/T4utkxUsHobV0JbVLhGvCmi6/MTkKbvi4a",
+      "role": "technician",
+      "service_category": "Electrician"
+    },
+    "5555555555": {
+      "id": "f65515e3-613a-4d93-9347-f3f1fe6987a6",
+      "name": "TestPlumber123",
+      "email": "test@example.com",
+      "phone": "5555555555",
+      "hpw": "$2b$12$1b2oXuvFEXq74S3Wh9V5v.jIFCJ3K8/33CpxxG89T0jmxt4DGOTp6",
+      "role": "technician",
+      "service_category": "Plumber"
+    },
+    "test@example.com": {
+      "id": "f65515e3-613a-4d93-9347-f3f1fe6987a6",
+      "name": "TestPlumber123",
+      "email": "test@example.com",
+      "phone": "5555555555",
+      "hpw": "$2b$12$1b2oXuvFEXq74S3Wh9V5v.jIFCJ3K8/33CpxxG89T0jmxt4DGOTp6",
+      "role": "technician",
+      "service_category": "Plumber"
+    },
+    "6666666666": {
+      "id": "b1f95cbf-7cb6-4753-90d0-116768ffec50",
+      "name": "TestPlumber456",
+      "email": "test456@example.com",
+      "phone": "6666666666",
+      "hpw": "$2b$12$zhcfJa/9cGFOU3DHMp4oL.Un8rTAbA/fwLfgWrOXRZ79169jqju1u",
+      "role": "technician",
+      "service_category": "Plumber"
+    },
+    "test456@example.com": {
+      "id": "b1f95cbf-7cb6-4753-90d0-116768ffec50",
+      "name": "TestPlumber456",
+      "email": "test456@example.com",
+      "phone": "6666666666",
+      "hpw": "$2b$12$zhcfJa/9cGFOU3DHMp4oL.Un8rTAbA/fwLfgWrOXRZ79169jqju1u",
+      "role": "technician",
+      "service_category": "Plumber"
+    },
+    "7200846038": {
+      "id": "55168f27-0c57-431b-9db0-1042adae76c0",
+      "name": "Yogi SD",
+      "email": "kiruthisumi2005@gmail.com",
+      "phone": "7200846038",
+      "hpw": "$2b$12$r2M4UL1opH.WNh6crQlCxORkt4InGroBYjeiXp7vaGYn6bjeinGe6",
+      "role": "technician",
+      "service_category": "Gas Service"
+    },
+    "kiruthisumi2005@gmail.com": {
+      "id": "55168f27-0c57-431b-9db0-1042adae76c0",
+      "name": "Yogi SD",
+      "email": "kiruthisumi2005@gmail.com",
+      "phone": "7200846038",
+      "hpw": "$2b$12$r2M4UL1opH.WNh6crQlCxORkt4InGroBYjeiXp7vaGYn6bjeinGe6",
+      "role": "technician",
+      "service_category": "Gas Service"
     }
   }
 }

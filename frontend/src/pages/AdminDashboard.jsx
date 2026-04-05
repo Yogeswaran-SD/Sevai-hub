@@ -29,9 +29,10 @@ export default function AdminDashboard() {
         getAdminTechnicians(token),
       ]);
       setStats(sRes.data);
-      setUsers(uRes.data);
-      setTechs(tRes.data);
-    } catch {
+      setUsers(uRes.data || []);
+      setTechs(tRes.data || []);
+    } catch (error) {
+      console.error("Admin dashboard error:", error.message || error);
       // Demo fallback
       setStats({ total_users: 124, total_technicians: 57, verified_technicians: 34, pending_technicians: 23, active_users: 118 });
       setUsers([]);

@@ -139,3 +139,29 @@ def delete_technician(tech_id: str, db: Session = Depends(get_db), _=Depends(req
     db.delete(tech)
     db.commit()
     return {"message": "Technician removed successfully."}
+
+
+@router.patch("/technicians/{tech_id}/location")
+def update_technician_location(
+    tech_id: str,
+    latitude: float,
+    longitude: float,
+    db: Session = Depends(get_db),
+    _=Depends(require_admin),
+):
+    """Update technician's geolocation for service discovery."""
+    tech = db.query(Technician).filter(Technician.id == tech_id).first()
+    if not tech:
+        raise HTTPException(status_code=404, detail="Technician not found.")
+    
+    if not (-90 <= latitude <= 90 and -180 <= longitude <= 180):
+        raise HTTPException(status_code=400, detail="Invalid latitude/longitude")
+    
+    tech.location = f"SRID=4326;POINT({longitude} {latitude})"
+    db.commit()
+    return {
+        "id": tech_id,
+        "message": "Location updated successfully",
+        "latitude": latitude,
+        "longitude": longitude,
+    }

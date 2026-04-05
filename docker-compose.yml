@@ -39,8 +39,8 @@ services:
       ADMIN_MOBILE: ${ADMIN_MOBILE:-9999999999}
       ADMIN_AADHAAR: ${ADMIN_AADHAAR:-123456789012}
       ADMIN_SECRET_KEY: ${ADMIN_SECRET_KEY:-change-this-admin-key}
-      ADMIN_PASSWORD_HASH: ${ADMIN_PASSWORD_HASH:-$2b$12$R9h7cIPz0gi.URNNX3kh2OPST9GfGQIm0jAGjfNcXt8mS5jSrqMSC}
-      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:3000,http://localhost:5173}
+      ADMIN_PASSWORD_HASH: ${ADMIN_PASSWORD_HASH:-$2b$12$uL44WyGrcbXj1/QhPFuS0uFB2sMooMRkByCOl3zatvRSLv76S2MQS}
+      CORS_ORIGINS: http://localhost:8080,http://sevaihub-frontend,http://localhost:3000,http://localhost:5173
       ENVIRONMENT: ${ENVIRONMENT:-development}
       DEBUG: ${DEBUG:-False}
       REDIS_URL: ${REDIS_URL:-redis://redis:6379}
@@ -83,10 +83,13 @@ services:
     build:
       context: .
       dockerfile: frontend/Dockerfile
+      args:
+        VITE_API_URL: http://localhost:8000
+        VITE_ENVIRONMENT: development
     container_name: sevaihub-frontend
     environment:
-      VITE_API_URL: ${VITE_API_URL:-http://localhost:8000}
-      VITE_ENVIRONMENT: ${VITE_ENVIRONMENT:-development}
+      VITE_API_URL: http://localhost:8000
+      VITE_ENVIRONMENT: development
     ports:
       - "8080:80"
     depends_on:

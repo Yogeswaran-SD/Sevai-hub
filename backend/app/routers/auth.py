@@ -14,6 +14,7 @@ This means:
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.orm import Session
+from sqlalchemy import func
 from app.database import get_db
 from app.models.user import User, UserRole
 from app.models.technician import Technician, ServiceCategory
@@ -283,10 +284,12 @@ def register_technician_self(
         ) or db.query(Technician).filter(Technician.phone == phone).first()
 
         if not existing:
-            # Create location point from coordinates
-            from geoalchemy2 import func as gfunc
-            location_point = gfunc.ST_MakePoint(longitude, latitude)
+            # Create location using ST_Point which is the proper way to create a point geography
+            # The ST_Point function creates a point from longitude and latitude
+            from geoalchemy2 import Geography
+            from geoalchemy2.elements import WKBElement
             
+            # Set location using ST_GeogFromText with WKT string
             new_tech = Technician(
                 id=uuid.UUID(tech_id),
                 name=name,
@@ -298,15 +301,37 @@ def register_technician_self(
                 is_verified=False,  # New technicians are unverified
                 city=city,
                 address=address or f"{city}, Tamil Nadu",
-                location=location_point,
+                # TTI fields with sensible defaults for new technicians
+                cancellation_rate=0.05,
+                response_delay_avg=15.0,
+                rating_stability=0.80,
+                availability_score=0.85,
+                verification_age_days=0,
             )
             db.add(new_tech)
+            db.flush()  # flush to get the ID
+            
+            # Now update the location using proper SQLAlchemy text
+            from sqlalchemy import text as sql_text
+            location_wkt = f"SRID=4326;POINT({longitude} {latitude})"
+            db.execute(
+                sql_text("""
+                UPDATE technicians 
+                SET location = ST_GeogFromText(:wkt)
+                WHERE id = :tech_id
+                """),
+                {"wkt": location_wkt, "tech_id": str(new_tech.id)}
+            )
             db.commit()
             db.refresh(new_tech)
+            print(f"[TECHNICIAN REGISTRATION] ✓ {name} ({phone}) stored in database with location ({latitude}, {longitude})")
     except Exception as db_err:
-        # Log but don't fail — local store registration succeeded
-        print(f"Warning: Could not create technician in DB: {db_err}")
-        pass
+        # Log and raise error so caller knows registration failed
+        print(f"[TECHNICIAN REGISTRATION] ✗ Database error: {db_err}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Technician registered to local auth but failed database storage. Contact admin. Error: {str(db_err)}"
+        )
 
     return {
         "message": "Technician registered successfully.",

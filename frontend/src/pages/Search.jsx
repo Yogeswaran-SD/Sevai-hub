@@ -227,61 +227,88 @@ export default function Search() {
 
   const isEmergency = EMERGENCY_CATEGORIES.includes(category);
 
-  const fetchTechnicians = useCallback(async (lat, lon) => {
+  // Fetch technicians - memoized with explicit params to avoid dependency issues
+  const fetchTechnicians = useCallback(async (lat, lon, selectedCategory, selectedRadius, searchQuery) => {
+    if (!lat || !lon || !selectedCategory) return;
+    
     setLoading(true);
     try {
-      const res = await getNearbyTechnicians(lat, lon, category, radius, "Low", query);
+      const res = await getNearbyTechnicians(lat, lon, selectedCategory, selectedRadius, "Low", searchQuery);
       const data = res.data;
-      setTechnicians(data.technicians || []);
+      
+      if (!data) {
+        throw new Error("No data returned from API");
+      }
+      
+      setTechnicians(Array.isArray(data.technicians) ? data.technicians : []);
       setEmergencyRisk(data.emergency_risk || null);
-      setRadiusExpanded(data.radius_expanded || false);
-      setFinalRadius(data.search_radius_km || radius);
-      setExpansionSteps(data.expansion_steps || []);
-      setSearchMeta({ total: data.total_found, lat, lon });
+      setRadiusExpanded(data.radius_expanded === true);
+      setFinalRadius(data.search_radius_km || selectedRadius);
+      setExpansionSteps(Array.isArray(data.expansion_steps) ? data.expansion_steps : []);
+      setSearchMeta({ total: data.total_found || 0, lat, lon });
       setUseMock(false);
-    } catch {
+    } catch (error) {
+      console.error("[Search Error]", error);
       // Fallback to mock data
-      const filtered = MOCK_TECHNICIANS.filter((t) => t.service_category === category);
+      const filtered = MOCK_TECHNICIANS.filter((t) => t.service_category === selectedCategory);
       setTechnicians(filtered);
-      setEmergencyRisk(computeMockRisk(category));
+      setEmergencyRisk(computeMockRisk(selectedCategory));
       setRadiusExpanded(false);
-      setFinalRadius(radius);
-      setExpansionSteps([radius]);
-      setSearchMeta({ total: filtered.length, lat, lon: 80.2707 });
+      setFinalRadius(selectedRadius);
+      setExpansionSteps([selectedRadius]);
+      setSearchMeta({ total: filtered.length, lat, lon });
       setUseMock(true);
     } finally {
       setLoading(false);
     }
-  }, [category, radius, query]);
+  }, []);
 
+  // Get user location and fetch technicians  
   const getLocation = useCallback(() => {
     setLocationError("");
+    
+    const performSearch = (lat, lon) => {
+      fetchTechnicians(lat, lon, category, radius, query);
+    };
+    
     if (!navigator.geolocation) {
       setLocationError(t('search.locationFallback'));
       const chennai = [13.0827, 80.2707];
       setUserLocation(chennai);
-      fetchTechnicians(chennai[0], chennai[1]);
+      performSearch(chennai[0], chennai[1]);
       return;
     }
+    
     navigator.geolocation.getCurrentPosition(
       (pos) => {
         const { latitude, longitude } = pos.coords;
         setUserLocation([latitude, longitude]);
-        fetchTechnicians(latitude, longitude);
+        performSearch(latitude, longitude);
       },
-      () => {
+      (error) => {
+        console.warn("[Geolocation Error]", error);
         setLocationError(t('search.locationError'));
-        setUserLocation([13.0827, 80.2707]);
-        fetchTechnicians(13.0827, 80.2707);
+        const fallback = [13.0827, 80.2707];
+        setUserLocation(fallback);
+        performSearch(fallback[0], fallback[1]);
       }
     );
-  }, [t, fetchTechnicians]);
+  }, [t, fetchTechnicians, category, radius, query]);
 
-  useEffect(() => { getLocation(); }, [category, radius, getLocation]);
-
-  const handleSearch = () => {
-    setSearchParams({ category, q: query });
+  // Effect: Re-fetch when category, radius or query changes
+  useEffect(() => {
     getLocation();
+  }, [getLocation]);
+
+  const handleSearch = (e) => {
+    if (e) e.preventDefault();
+    setSearchParams({ category, q: query });
+    
+    if (userLocation) {
+      fetchTechnicians(userLocation[0], userLocation[1], category, radius, query);
+    } else {
+      getLocation();
+    }
   };
 
   return (

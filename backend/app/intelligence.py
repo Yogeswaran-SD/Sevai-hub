@@ -169,7 +169,7 @@ def compute_tti(
 # 3. ADAPTIVE SEARCH RADIUS ALGORITHM
 # ─────────────────────────────────────────────────────────────────────────────
 
-RADIUS_STEPS = [3.0, 5.0, 8.0, 15.0, 30.0]
+RADIUS_STEPS = [3.0, 5.0, 8.0, 15.0, 30.0, 50.0, 75.0]
 
 
 def get_adaptive_radius_steps(initial_km: float = 3.0) -> list[float]:

@@ -88,6 +88,8 @@ class TechnicianResponse(BaseModel):
     address:          Optional[str]
     city:             str
     profile_image:    Optional[str]
+    latitude:         Optional[float] = None
+    longitude:        Optional[float] = None
     distance_km:      Optional[float] = None
     created_at:       datetime
 

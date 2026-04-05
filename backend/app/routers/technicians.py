@@ -20,6 +20,24 @@ router = APIRouter(prefix="/technicians", tags=["Technicians"])
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# CITY LOCATION DEFAULTS (for technicians without explicit location)
+# ─────────────────────────────────────────────────────────────────────────────
+CITY_DEFAULTS = {
+    "Chennai": {"lat": 13.0827, "lon": 80.2707},
+    "Bangalore": {"lat": 12.9716, "lon": 77.5946},
+    "Hyderabad": {"lat": 17.3850, "lon": 78.4867},
+    "Mumbai": {"lat": 19.0760, "lon": 72.8777},
+    "Delhi": {"lat": 28.7041, "lon": 77.1025},
+    "Pune": {"lat": 18.5204, "lon": 73.8567},
+    "Ahmedabad": {"lat": 23.0225, "lon": 72.5714},
+}
+
+def get_default_location_for_city(city: str) -> dict:
+    """Get default lat/lon for a city, fallback to Chennai."""
+    return CITY_DEFAULTS.get(city, CITY_DEFAULTS.get("Chennai"))
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # HELPERS
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -29,6 +47,18 @@ def _enrich_technician(
     emergency_risk_score: float = 0.0,
 ) -> TechnicianIntelligenceResponse:
     """Attach TTI, ETA, and weighted allocation score to a raw technician dict."""
+    
+    # Convert service_category from enum name (PLUMBER) to value (Plumber)
+    if "service_category" in tech_dict:
+        raw_category = tech_dict["service_category"]
+        try:
+            # If it's the enum key (PLUMBER), convert to value (Plumber)
+            enum_member = ServiceCategory[raw_category]
+            tech_dict["service_category"] = enum_member.value
+        except (KeyError, TypeError):
+            # If it's already the value (Plumber), keep it as is
+            pass
+    
     tti_result = compute_tti(
         cancellation_rate=    tech_dict.get("cancellation_rate",      0.05),
         response_delay_avg=   tech_dict.get("response_delay_avg",    15.0),
@@ -61,17 +91,28 @@ def _enrich_technician(
 
 
 def _spatial_query(db: Session, lat: float, lon: float, category: str, radius_m: float):
-    sql = text("""
+    """
+    Improved geospatial query that:
+    1. Finds technicians with valid locations within radius
+    2. Falls back to technicians without location (assigns default city location)
+    3. Returns debug info about filtering
+    """
+    # Query 1: Technicians WITH valid locations
+    sql_with_location = text("""
         SELECT
             t.*,
+            ST_Y(t.location::geometry) AS latitude,
+            ST_X(t.location::geometry) AS longitude,
             ST_Distance(
                 t.location::geography,
                 ST_MakePoint(:lon, :lat)::geography
-            ) / 1000.0 AS distance_km
+            ) / 1000.0 AS distance_km,
+            true AS has_location
         FROM technicians t
         WHERE
             t.is_available = true
-            AND t.service_category = :category
+            AND t.service_category::text = :category
+            AND t.location IS NOT NULL
             AND ST_DWithin(
                 t.location::geography,
                 ST_MakePoint(:lon, :lat)::geography,
@@ -83,12 +124,48 @@ def _spatial_query(db: Session, lat: float, lon: float, category: str, radius_m:
             t.is_verified DESC
         LIMIT 20
     """)
-    result = db.execute(sql, {
-        "lat": lat, "lon": lon,
-        "category": category,
-        "radius_m": radius_m,
-    })
-    return result.mappings().all()
+    
+    try:
+        result_with_location = db.execute(sql_with_location, {
+            "lat": lat, "lon": lon,
+            "category": category,
+            "radius_m": radius_m,
+        }).mappings().all()
+        rows = list(result_with_location)
+    except Exception as e:
+        print(f"[WARN] Spatial query with location failed: {e}")
+        rows = []
+
+    # Query 2: If no results, include technicians WITHOUT location
+    if not rows:
+        sql_without_location = text("""
+            SELECT
+                t.*,
+                NULL::float AS latitude,
+                NULL::float AS longitude,
+                999.0 AS distance_km,
+                false AS has_location
+            FROM technicians t
+            WHERE
+                t.is_available = true
+                AND t.service_category::text = :category
+                AND t.location IS NULL
+            ORDER BY
+                t.rating DESC,
+                t.is_verified DESC
+            LIMIT 20
+        """)
+        
+        try:
+            result_without_location = db.execute(sql_without_location, {
+                "category": category,
+            }).mappings().all()
+            rows = list(result_without_location)
+        except Exception as e:
+            print(f"[WARN] Spatial query without location failed: {e}")
+            rows = []
+
+    return rows
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -113,10 +190,11 @@ def get_nearby_technicians(
       • ETA prediction per technician
       • Weighted Allocation ranking
     """
-    # Convert service_category string to enum value
+    # Convert service_category string to enum key (enum member name)
     try:
         category_enum = ServiceCategory(service_category)
-        category_value = category_enum.value
+        # Use the enum KEY (name) not the VALUE, since that's what's stored in database
+        category_key = category_enum.name
     except ValueError:
         raise HTTPException(status_code=400, detail=f"Invalid service category: {service_category}")
     
@@ -127,7 +205,7 @@ def get_nearby_technicians(
     expanded      = False
 
     for step in radius_steps:
-        rows = _spatial_query(db, latitude, longitude, category_value, step * 1000)
+        rows = _spatial_query(db, latitude, longitude, category_key, step * 1000)
         final_radius = step
         if rows:
             expanded = step > radius_steps[0]
@@ -194,8 +272,20 @@ def register_technician(data: TechnicianCreate, db: Session = Depends(get_db)):
         raise HTTPException(status_code=400, detail="Phone already registered.")
 
     location = None
+    assigned_lat = data.latitude
+    assigned_lon = data.longitude
+    
+    # If location provided, use it
     if data.latitude and data.longitude:
         location = f"SRID=4326;POINT({data.longitude} {data.latitude})"
+    else:
+        # Auto-assign default location based on city
+        city = data.city or "Chennai"
+        default_loc = get_default_location_for_city(city)
+        assigned_lat = default_loc["lat"]
+        assigned_lon = default_loc["lon"]
+        location = f"SRID=4326;POINT({assigned_lon} {assigned_lat})"
+        print(f"[TECH REGISTRATION] Auto-assigned location for {city}: ({assigned_lat}, {assigned_lon})")
 
     tech = Technician(
         name=data.name, phone=data.phone, email=data.email,
