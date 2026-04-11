@@ -368,6 +368,15 @@
       "hpw": "$2b$12$r2M4UL1opH.WNh6crQlCxORkt4InGroBYjeiXp7vaGYn6bjeinGe6",
       "role": "technician",
       "service_category": "Gas Service"
+    },
+    "9345540866": {
+      "id": "fe779a51-d529-4013-97d8-5e5811e0b81e",
+      "name": "yogi",
+      "email": null,
+      "phone": "9345540866",
+      "hpw": "$2b$12$EVcZYI7RnqM3eadc0Q0rM.OAnqaB9Dr5tj5JLWgc0nLYaZLhdiRsi",
+      "role": "technician",
+      "service_category": "AC Technician"
     }
   }
 }

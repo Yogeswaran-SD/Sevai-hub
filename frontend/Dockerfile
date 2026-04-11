@@ -15,13 +15,13 @@ ENV VITE_API_URL=$VITE_API_URL
 ENV VITE_ENVIRONMENT=$VITE_ENVIRONMENT
 
 # Copy package files
-COPY package*.json ./
+COPY frontend/package*.json ./
 
 # Install dependencies
 RUN npm ci
 
 # Copy application source
-COPY . .
+COPY frontend/ .
 
 # Build the Vite application with environment variables
 RUN npm run build
